@@ -1,15 +1,12 @@
+//Routes for users
 const { Router } = require('express');
 
 const usersRoutes = Router();
 
-usersRoutes.get('/', (req, res) => {
-    res.send(`Rota GET running on localhost:${PORT}`);
-});
+usersRoutes.post('/', (req, res) => {
+    const { username, email, password } = req.body;
 
-usersRoutes.post('/users', (req, res) => {
-    const { username, password } = req.body;
-
-    res.send(`${username} \n ${password}`)
+    res.send(`${username} \n ${email} \n ${password}`);
 });
 
 module.exports = usersRoutes;
