@@ -9,7 +9,7 @@ checkIfIsAdmin = (req, res, next) => {
     if (req.body.isAdmin === true) {
         return next();
     }
-    return res.status(401).json({ error: 'Não Autorizado' });
+    return res.status(401).json({ error: 'Usuário Não Autorizado' });
 }
 
 const usersController = new UsersController();
