@@ -5,8 +5,15 @@ const usersRoutes = Router();
 
 const UsersController = require('../controllers/UsersController')
 
+checkIfIsAdmin = (req, res, next) => {
+    if (req.body.isAdmin === true) {
+        return next();
+    }
+    return res.status(401).json({ error: 'Não Autorizado' });
+}
+
 const usersController = new UsersController();
 
-usersRoutes.post('/', usersController.create);
+usersRoutes.post('/', checkIfIsAdmin, usersController.create);
 
 module.exports = usersRoutes;
