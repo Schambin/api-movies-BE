@@ -1,3 +1,4 @@
+//Create the connection to the database
 const path = require('path');
 const sqlite = require('sqlite');
 const sqlite3 = require('sqlite3');
