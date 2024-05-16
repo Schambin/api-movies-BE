@@ -11,6 +11,8 @@
   "author": "Kauan Schamber",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "date-fns": "^3.6.0",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
     "sqlite": "^5.1.1",
