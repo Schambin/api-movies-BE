@@ -1,4 +1,4 @@
-//Client side err handler
+//error handler
 class AppError {
     message;
     statusCode;

@@ -1,4 +1,4 @@
-//Run migrations(inside schemas..) 
+//Run migrations(inside const schemas..) 
 const sqliteConnection = require('../../sqlite');
 const createUsers = require('./createUsers');
 
