@@ -28,7 +28,7 @@ class UsersController {
     }
 
     async update(req, res) {
-        const { name, email, password, oldPassword, newPassword } = req.body;
+        const { name, email, oldPassword, newPassword } = req.body;
         const { id } = req.params;
         const database = await sqliteConnection();
         const formatedDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
@@ -51,10 +51,14 @@ class UsersController {
                 throw new AppError('Senha antiga está incorreta');
             }
 
-            if (newPassword) {
+            if (!newPassword) {
+                throw new AppError('Digite a nova senha!')
+            } else {
                 const hashedPassword = await bcrypt.hash(newPassword, 8);
                 user.password = hashedPassword;
             }
+        } else if (!oldPassword) {
+            throw new AppError('Digite a senha antiga!');
         }
 
         user.name = name;
