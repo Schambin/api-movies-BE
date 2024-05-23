@@ -33,14 +33,13 @@ class UsersController {
         const database = await sqliteConnection();
         const formatedDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
 
-
         const user = await database.get(`SELECT * FROM users WHERE id = (?)`, [id]);
         if (!user) {
             throw new AppError('Usuário não encontrando ou inexistente');
         }
 
 
-        const newEmail = await database.get(`SELECT * FROM users WHERE email = (?)`, [email]);
+        let newEmail = await database.get(`SELECT * FROM users WHERE email = (?)`, [email]);
         if (newEmail && newEmail.id !== user.id) {
             throw new AppError('Este email já está em uso');
         }
@@ -61,12 +60,16 @@ class UsersController {
             throw new AppError('Digite a senha antiga!');
         }
 
-        user.name = name;
-        user.email = email;
+        user.name = name ?? user.name;
+        user.email = email ?? user.email;
 
         await database.run(`
             UPDATE users SET
-            name = ?, email = ?, password =?, updated_at = ? WHERE id = ?`,
+            name = ?, 
+            email = ?, 
+            password =?, 
+            updated_at = ? 
+            WHERE id = ?`,
             [user.name, user.email, user.password, formatedDate, id]
         );
 
