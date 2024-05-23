@@ -1,8 +1,8 @@
 //Migration to movie_notes table;
-exports.up = knex = knex.schema.createTable("movie_notes", table => {
+exports.up = knex => knex.schema.createTable("movie_notes", table => {
     table.increments("id");
-    table.text("title");
-    table.text("description");
+    table.varchar("title");
+    table.varchar("description");
     table.integer("rating");
     table.integer("user_id").references("id").inTable("users");
     table.timestamp("created_at").default(knex.fn.now());
