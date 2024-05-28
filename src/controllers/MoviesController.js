@@ -90,24 +90,36 @@ class MoviesController {
         if (tags) {
             const filteredTags = tags.split(',').map(tag => tag.trim());
 
-            movies = await knex('movie_tags')
-                .whereIn("name", filteredTags)
-
-        }
-        
-        if (!title) {
-
             movies = await knex('movie_notes')
-                .where({ user_id })
-
-
+                .select('movie_notes.*')
+                .distinct()
+                .join('movie_tags', 'movie_notes.id', 'movie_tags.movie_id')
+                .where('movie_notes.user_id', user_id)
+                .whereIn('movie_tags.name', filteredTags)
+                .whereLike("title", `%${title}%`);
         } else {
             movies = await knex('movie_notes')
                 .where({ user_id })
-                .whereLike("title", `%${title}%`);
+                .modify(queryBuilder => {
+                    if (title) {
+                        .whereLike("title", `%${title}%`);
+                    }
+                });
         }
 
-        return res.json({ movies });
+        const movieIds = movies.map(movie => movie.id);
+
+        const tagsForMovies = await knex('movie_tags').whereIn('movie_id', movieIds);
+
+        const moviesWithTags = movies.map(movie => {
+            const movieTags = tagsForMovies.filter(tag => tag.movie_id === movie.id);
+            return {
+                ...movie,
+                tags: movieTags.map(tag => tag.name)
+            };
+        });
+
+        return res.json(moviesWithTags);
     }
 
 }
