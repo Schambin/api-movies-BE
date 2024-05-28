@@ -71,6 +71,17 @@ class MoviesController {
         });
     }
 
+    async delete(req, res) {
+        const { id } = req.params;
+
+        const movie = await knex('movie_notes').where({ id }).first().delete();
+        if (!movie) {
+            throw new AppError('Movie not found');
+        };
+
+        return res.json();
+    }
+
 }
 
 module.exports = MoviesController;
