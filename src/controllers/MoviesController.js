@@ -82,6 +82,34 @@ class MoviesController {
         return res.json();
     }
 
+    async list(req, res) {
+        const { user_id, title, tags } = req.query;
+
+        let movies;
+
+        if (tags) {
+            const filteredTags = tags.split(',').map(tag => tag.trim());
+
+            movies = await knex('movie_tags')
+                .whereIn("name", filteredTags)
+
+        }
+        
+        if (!title) {
+
+            movies = await knex('movie_notes')
+                .where({ user_id })
+
+
+        } else {
+            movies = await knex('movie_notes')
+                .where({ user_id })
+                .whereLike("title", `%${title}%`);
+        }
+
+        return res.json({ movies });
+    }
+
 }
 
 module.exports = MoviesController;
