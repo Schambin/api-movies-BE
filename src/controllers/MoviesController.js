@@ -55,6 +55,22 @@ class MoviesController {
         });
     }
 
+    async show(req, res) {
+        const { id } = req.params;
+
+        const movie = await knex('movie_notes').where({ id }).first();
+        if (!movie) {
+            throw new AppError('Movie not found');
+        };
+
+        const tags = await knex('movie_tags').where({ movie_id: id }).select('name');
+
+        return res.json({
+            ...movie,
+            tags
+        });
+    }
+
 }
 
 module.exports = MoviesController;
