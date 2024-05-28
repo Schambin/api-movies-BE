@@ -6,15 +6,15 @@ const usersRoutes = Router();
 const UsersController = require('../controllers/UsersController')
 
 /*
- * MiddleWare Check
- *
- *  checkIfIsAdmin = (req, res, next) => {
- *   if (req.body.isAdmin === true) {
- *       return next();
- *   }
- *      return res.status(401).json({ error: 'Usuário Não Autorizado' });
- *   }
- */
+*  MiddleWare Check
+*
+*  checkIfIsAdmin = (req, res, next) => {
+*   if (req.body.isAdmin === true) {
+*       return next();
+*   }
+*      return res.status(401).json({ error: 'Usuário Não Autorizado' });
+*   }
+*/
 
 const usersController = new UsersController();
 
