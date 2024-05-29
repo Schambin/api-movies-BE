@@ -96,13 +96,17 @@ class MoviesController {
                 .join('movie_tags', 'movie_notes.id', 'movie_tags.movie_id')
                 .where('movie_notes.user_id', user_id)
                 .whereIn('movie_tags.name', filteredTags)
-                .whereLike("title", `%${title}%`);
+                .modify(queryBuilder => {
+                    if (title) {
+                        queryBuilder.where('movie_notes.title', 'like', `%${title}%`);
+                    }
+                });
         } else {
             movies = await knex('movie_notes')
                 .where({ user_id })
                 .modify(queryBuilder => {
                     if (title) {
-                        .whereLike("title", `%${title}%`);
+                        queryBuilder.where('title', 'like', `%${title}%`);
                     }
                 });
         }
