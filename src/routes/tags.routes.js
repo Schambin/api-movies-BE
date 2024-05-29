@@ -1,24 +1,12 @@
-//Routes for users
+//Routes for Tags
 const { Router } = require('express');
 
-const usersRoutes = Router();
+const TagsController = require('../controllers/TagsController')
 
-const UsersController = require('../controllers/UsersController')
+const tagsRoutes = Router();
 
-/*
-*  MiddleWare Check
-*
-*  checkIfIsAdmin = (req, res, next) => {
-*   if (req.body.isAdmin === true) {
-*       return next();
-*   }
-*      return res.status(401).json({ error: 'Usuário Não Autorizado' });
-*   }
-*/
+const tagsController = new TagsController();
 
-const usersController = new UsersController();
+tagsRoutes.get('/:user_id', tagsController.list);
 
-usersRoutes.post('/', usersController.create);
-usersRoutes.put('/:id', usersController.update);
-
-module.exports = usersRoutes;
+module.exports = tagsRoutes;
